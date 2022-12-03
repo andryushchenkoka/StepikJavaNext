@@ -2,6 +2,7 @@ package lesson21;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Lesson21 {
@@ -33,13 +34,26 @@ public class Lesson21 {
         listEmp.add(emp2);
         listEmp.add(emp3);
 
-        System.out.println(listEmp.toString());
+        printArray(listEmp);
 
-        Collections.sort(listEmp);
+        listEmp.sort(new IdComparator());       // вызов сортировщика по id
+        printArray(listEmp);
 
-        System.out.println(listEmp);
+        listEmp.sort(new NameComparator());     // вызов сортировщика по name
+        printArray(listEmp);
+
+        listEmp.sort(new SalaryComparator());   // вызов сортировщика по salary
+        printArray(listEmp);
     }
 
+    // метод вывода элементов списка
+    static void printArray(List<Employee> empList) {
+        System.out.println("===================================");
+        for (Employee employee : empList) {
+            System.out.println(employee.id + " " + employee.firstName + " " + employee.lastName + " " + employee.salary);
+        }
+        System.out.println("===================================");
+    }
 }
 
 // для сортировки списка как listEmp, нужно реализовать интерфейс Comparable (сравнимость)
@@ -69,5 +83,32 @@ class Employee implements Comparable<Employee> {
 //        }
 //
 //        return result;
+    }
+}
+
+// LESSON 2.2
+class IdComparator implements Comparator<Employee> {
+    @Override
+    public int compare(Employee emp1, Employee emp2) {
+        return Integer.compare(emp1.id, emp2.id);
+    }
+}
+
+class NameComparator implements Comparator<Employee> {
+    @Override
+    public int compare(Employee emp1, Employee emp2) {
+        int result = emp1.firstName.compareTo(emp2.firstName);  // сортировка по String полю
+        if (result == 0) {
+            result = emp1.lastName.compareTo(emp2.lastName);
+        }
+
+        return result;
+    }
+}
+
+class SalaryComparator implements Comparator<Employee> {
+    @Override
+    public int compare(Employee emp1, Employee emp2) {
+        return Integer.compare(emp1.id, emp2.id);
     }
 }
