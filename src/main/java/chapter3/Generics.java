@@ -64,13 +64,13 @@ class ParamMethod {
     // <Т> указывает что используются дженерики,
     // T возвращаемый тип
     // это же Т в ArrayList
-    public static <T> T parametrisedMethod(ArrayList<T> list){
+    public static <T> T parametrisedMethod(ArrayList<T> list) {
         return list.get(0);
     }
 }
 
 // IDEA не допускает использование одноименных типов (одна <T> для класса, другая отдельно для метода)
-class Example <T> {
+class Example<T> {
 
 //    private T value;
 //
@@ -80,5 +80,38 @@ class Example <T> {
 //
 //    public <T> T getValue() {
 //        return value;
+//    }
+}
+
+// type erasure - стирание типов. Дженерики нужны компилятору, но для JVM результат компиляции приходит без дженериков.
+// следовательно методы разные на этапе компиляции могут быть одинаковыми для JVM
+class TypeErasure {
+
+    // разница этих методов в используемом типе данных в дженериках
+
+//    public void oneMethod(Example<String> value){
+//
+//    }
+//
+//    public void oneMethod(Example<Integer> value){
+//
+//    }
+}
+
+// type erasure возникает и при overriding метода наследника, потому что метод родителя есть и у наследника
+// т.е не важно - перезаписываются два собственных метода или 1 наследованный и 1 собственный
+class Parent {
+
+    public void abc(Info<String> info) {
+
+    }
+
+}
+
+class Child extends Parent {
+//    компилятор ругается на type erasure в этом методе (разница в String и Integer в параметрах)
+
+//    public void abc(Info<Integer> info){
+//
 //    }
 }
