@@ -7,7 +7,12 @@ public class Generics {
 
     public static void main(String[] args) {
         // в правой части всегда нужно ставить угловые скобки <>
-        List<String> list = new ArrayList<>();
+        List<String> listStr = new ArrayList<>();
+        listStr.add("abc");
+        listStr.add("def");
+        List<Double> listDouble = new ArrayList<>();
+        listDouble.add(3.14);
+        listDouble.add(21.63);
 
         // парамеитризованный класс
         Info<Integer> info1 = new Info<>(26);
@@ -19,6 +24,21 @@ public class Generics {
         // параметризованный класс с несколькими переменными
         Pair<String, Integer> pair1 = new Pair<>("age", 21);
         System.out.println(pair1.getKey());
+
+        // использование subtyping с ограничением Number
+        OnlyNum<Integer> onlyNum1 = new OnlyNum<>();
+        onlyNum1.typeOf(5);
+
+        OnlyNum<Double> onlyNum2 = new OnlyNum<>();
+        onlyNum2.typeOf(3.15);
+
+        new OnlyNum<Long>().typeOf(12345L);
+
+        //new OnlyNum<String>().typeOf("str"); ошибка: String != Number
+
+        // subtyping в методах
+        // onlyNum1.getFirstElement(listStr);   ошибка: String != Number
+        onlyNum1.getFirstElement(listDouble);
     }
 }
 
@@ -114,4 +134,21 @@ class Child extends Parent {
 //    public void abc(Info<Integer> info){
 //
 //    }
+}
+
+// subtyping позволяет ограничить используемые типы (классы) в дженериках
+// напр. с extends разрешим принимать в <T> только числовые типы
+// дословно: тип должен являться наследником класса Number
+class OnlyNum<T extends Number> {
+    private T value;
+
+    public void typeOf(T value) {
+        System.out.println(value.getClass());
+    }
+
+    // subtyping в методах
+    // метод может принимать в список только числовые типы
+    public <V extends Number> void getFirstElement(List<V> list) {
+        System.out.println(list.get(0));
+    }
 }
