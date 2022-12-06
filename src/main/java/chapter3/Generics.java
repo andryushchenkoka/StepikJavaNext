@@ -39,6 +39,11 @@ public class Generics {
         // subtyping в методах
         // onlyNum1.getFirstElement(listStr);   ошибка: String != Number
         onlyNum1.getFirstElement(listDouble);
+
+        // wildcards
+        ListWork listWork = new ListWork();
+        listWork.showListElements(listStr);
+        listWork.showListElements(listDouble);
     }
 }
 
@@ -150,5 +155,12 @@ class OnlyNum<T extends Number> {
     // метод может принимать в список только числовые типы
     public <V extends Number> void getFirstElement(List<V> list) {
         System.out.println(list.get(0));
+    }
+}
+
+// wildcards
+class ListWork {
+    void showListElements(List<?> list){
+        System.out.println("Все элементы: " + list);
     }
 }
