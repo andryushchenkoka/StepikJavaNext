@@ -6,13 +6,16 @@ public class FilesIO {
 
     public static void main(String[] args) throws IOException {
 
-        String text = "Кабы не было зимы в городах и сёлах...";
+        String text = "Уж сколько их упало в эту бездну,\n" +
+                "Разверстую вдали!\n" +
+                "Настанет день, когда и я исчезну\n" +
+                "С поверхности земли.";
         String result;
         String filepath = "src/main/resources/chapter9.txt";
 
-        useFileWriter(filepath, text);
+        useBufferedWriter(filepath, text);
         System.out.println("Записано в файл");
-        result = useFileReader(filepath);
+        result = useBufferedReader(filepath);
         System.out.println("Считано из файла: " + result);
     }
 
