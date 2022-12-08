@@ -1,5 +1,6 @@
 package chapter9;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,20 +38,40 @@ public class FilesIO {
         FileReader reader = null;
         String result = "";
 
-        try{
+        try {
             reader = new FileReader(filepath);
             int character;
-            while((character = reader.read()) != -1){ // read() возвращает int пока файл не закончится. Иначе будет -1
-                result += (char)character;      // записываем в переменную очередной считанный символ
+            while ((character = reader.read()) != -1) { // read() возвращает int пока файл не закончится. Иначе будет -1
+                result += (char) character;      // записываем в переменную очередной считанный символ
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally{
+        } finally {
             reader.close();
             return result;
         }
     }
 
+    // try with resources
+    // Java сама закроет поток, который открыли в try()
+    public static void useFileWriter2(String filepath, String inputText) {
+        try (FileWriter fileWriter = new FileWriter(filepath)) {
+            fileWriter.write(inputText);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    // в try() можно использовать несколько ресурсов
+    // перечислять через точку с запятой
+    // ресурс из блока try() должен имплементировать интерфейс AutoCloseable
+    // (FileReader имплементирует интерфейс, который в свою очередь имплементирует AutoCloseable)
+    public static void useFileWriter3(String filepath, String inputText) throws IOException {
+        try (
+                FileWriter fileWriter = new FileWriter(filepath); // вот здесь
+                FileReader fileReader = new FileReader(filepath)
+        ) {
+            fileWriter.write(inputText);
+        }
+    }
 }
