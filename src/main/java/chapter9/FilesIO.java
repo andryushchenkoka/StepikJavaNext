@@ -1,9 +1,6 @@
 package chapter9;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class FilesIO {
 
@@ -48,8 +45,9 @@ public class FilesIO {
             e.printStackTrace();
         } finally {
             reader.close();
-            return result;
         }
+
+        return result;
     }
 
     // try with resources
@@ -73,5 +71,36 @@ public class FilesIO {
         ) {
             fileWriter.write(inputText);
         }
+    }
+
+    // bufferedReader/writer - запоминает символы из файла - 1 или более раз в зависимости от размера файла
+    // затем идет посимвольная запись из буфера. Таким образом значительно меньше обращений к файлу (ресурсоемкая операция)
+    public static void useBufferedWriter(String filepath, String inputText) {
+
+        try (
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filepath));
+        ) {
+            bufferedWriter.write(inputText);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String useBufferedReader(String filepath) {
+
+        String result = "";
+        int character;
+
+        try (
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(filepath)) // java закроет поток
+        ) {
+            while ((character = bufferedReader.read()) != -1) {
+                result += (char) character;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 }
