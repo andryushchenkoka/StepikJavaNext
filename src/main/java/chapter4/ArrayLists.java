@@ -1,6 +1,7 @@
 package chapter4;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArrayLists {
 
@@ -11,7 +12,10 @@ public class ArrayLists {
 
         //createArrayList();
         //methodsOfArrayListOne();
-        methodsOfArrayListTwo();
+        //methodsOfArrayListTwo();
+        //methodsOfArrayListThree();
+        //methodsOfArrayListFour();
+        methodsOfArrayListFive();
     }
 
     public static void createArrayList() {
@@ -115,5 +119,118 @@ public class ArrayLists {
         names.addAll(girlNames);
         System.out.println(names.contains("Boris")); // false
         System.out.println(names.contains("Anna")); // true
+    }
+
+    public static void methodsOfArrayListThree() {
+
+        ArrayList<String> names = new ArrayList<>();
+
+        ArrayList<String> pairNames = new ArrayList<>();
+        pairNames.add("Sasha");
+        pairNames.add("Alex");
+
+        ArrayList<String> boyNames = new ArrayList<>();
+        boyNames.add("Sasha");
+        boyNames.add("Boris");
+        boyNames.add("Petr");
+
+        ArrayList<String> girlNames = new ArrayList<>();
+        girlNames.add("Anna");
+        girlNames.add("Sofia");
+        girlNames.add("Sasha");
+
+
+        // removeAll() удалит все совпадения с указанным списком
+        boyNames.removeAll(pairNames);  // [Boris, Petr]
+        System.out.println(boyNames);
+
+        boyNames.add("Alex");           // [Boris, Petr, Alex]
+        boyNames.add("Alex");           // [Boris, Petr, Alex, Alex]
+
+        boyNames.removeAll(pairNames);  // [Boris, Petr]
+        System.out.println(boyNames);
+
+
+        // retainAll() оставит только те элементы, которые совпадают с указанным списком
+        names.addAll(girlNames);        // [Anna, Sofia, Sasha]
+        names.retainAll(pairNames);     // [Sasha]
+        System.out.println(names);
+
+
+        // containsAll() определяет, все ли элементы из указанного списка содержатся
+        System.out.println(names.containsAll(pairNames));      // false. потому что в names не хватает Alex
+
+        names.add(0, "Alex");                     // [Alex, Sasha]
+        System.out.println(names.containsAll(pairNames));      // true
+    }
+
+    public static void methodsOfArrayListFour() {
+
+        ArrayList<String> names = new ArrayList<>();
+
+        ArrayList<String> pairNames = new ArrayList<>();
+        pairNames.add("Sasha");
+        pairNames.add("Alex");
+
+        ArrayList<String> boyNames = new ArrayList<>();
+        boyNames.add("Sasha");
+        boyNames.add("Boris");
+        boyNames.add("Petr");
+
+        ArrayList<String> girlNames = new ArrayList<>();
+        girlNames.add("Anna");
+        girlNames.add("Sofia");
+        girlNames.add("Sasha");
+
+
+        // subList() копирует в себя элементы из указанного списка в обозначенном интервале
+        // sublist говорит Я беру себе с 1 по 4 (не включая) элементы из списка names
+        names.addAll(boyNames);     // [Sasha, Boris, Petr]
+        names.addAll(girlNames);    // [Sasha, Boris, Petr, Anna, Sofia, Sasha]
+
+        List<String> sublist = names.subList(1, 4);     // [Boris, Petr, Anna] - элемент to не входит в интервал
+        System.out.println(sublist);
+
+        // sublist не является самостоятельной сущностью. sublist - это представление (view) листа names.
+        // если в sublist добавить элемент, он будет добавлен и в names
+
+        sublist.add("Vadim");
+        System.out.println(sublist); // [       Boris, Petr, Anna, Vadim]  sublist стал с 1 по 5 элемент, а не по 4
+        System.out.println(names);   // [Sasha, Boris, Petr, Anna, Vadim, Sofia, Sasha]
+
+        System.out.println("Сравнение ссылок sublist и names: " + (sublist == names));  // false
+
+
+        // все изменения в names должны быть сделаны с помозью view (sublist), наче выпадет Concurrent Exception
+        //names.remove("Sasha");
+        //System.out.println(names);      // [Sasha, Boris, Petr, Anna, Vadim, Sofia, Sasha]
+        //System.out.println(sublist);    // throws new Concurrent Exception
+
+
+        // toArray() создает массив элементов из списка
+        Object[] objArr = names.toArray();
+        String[] strArr = names.toArray(new String[0]);
+        for (Object o : objArr)
+            System.out.println("Object : " + o); // [Sasha, Boris, Petr, Anna, Vadim, Sofia, Sasha]
+        for (String s : strArr)
+            System.out.println("String : " + s); // [Sasha, Boris, Petr, Anna, Vadim, Sofia, Sasha]
+        System.out.println("Сравнение ссылок sublist и names: " + (sublist == names));  // false
+    }
+
+    public static void methodsOfArrayListFive() {
+
+        ArrayList<String> pairNames = new ArrayList<>();
+        pairNames.add("Sasha");
+        pairNames.add("Alex");
+
+
+        // listOf - созданный лист не может содержать null, а также нельзя модифицировать (добавлять, изменять)
+        List<Integer> listInt = List.of(1, 3, 2, 4, 3, 5);
+        System.out.println(listInt);    // [1, 3, 2, 4, 3, 5]
+
+
+        // copyOf
+        List<String> listStr = List.copyOf(pairNames);
+        System.out.println(listStr);    // [Sasha, Alex]
     }
 }
