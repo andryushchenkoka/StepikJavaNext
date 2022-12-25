@@ -1,12 +1,15 @@
 package chapter4;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Locale;
 
 public class Collections {
 
     public static void main(String[] args) {
 
-        linkedList();
+        //linkedList();
+        listIterator();
     }
 
     // 4.7 LinkedList
@@ -36,5 +39,34 @@ public class Collections {
 
         names.remove(0);
         System.out.println(names); // [Kirill, Sergey]
+    }
+
+    // 4.8 ListIterator
+    public static void listIterator(){
+
+        // определение на пaлиндром
+
+        String palindrome = "Rotor";
+
+        LinkedList<Character> list = new LinkedList<>();
+
+        for(char c : palindrome.toLowerCase().toCharArray()){
+            list.add(c);
+        }
+
+        ListIterator<Character> listIteratorLeft = list.listIterator();              // итератор ->
+        ListIterator<Character> listIteratorRight = list.listIterator(list.size());  // итератор <-
+
+        boolean isPalindrome = true;
+
+        while (listIteratorLeft.hasNext() && listIteratorRight.hasPrevious()){
+            if(listIteratorLeft.next() != listIteratorRight.previous()){
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        if(isPalindrome) System.out.println("is palindrome");
+        else System.out.println("is not palindrome");
     }
 }
