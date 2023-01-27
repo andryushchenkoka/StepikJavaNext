@@ -49,4 +49,6 @@ public class HashMaps {
         // values - возвращает множество ключей
         System.out.println(passport.values()); // [Ivan Ivanov, Boris Mikhailov, Ivan Petrov]
     }
+
+
 }
